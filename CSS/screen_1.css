@@ -1,0 +1,7 @@
+/*Màn hình 1*/
+#Screen_1 {
+    position: absolute; 
+    left: 215px; top: 11px; 
+    width: 1500px; height: 900px;
+    background-color: rgb(15, 228, 210); 
+}

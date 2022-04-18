@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <title>Quang Nguyen</title>
+
+</head>
+<body >
+  <div id="TOP">
+
+    <table border="0">
+      <tr>
+        <td colspan="2" id="line">ĐẠI HỌC CÔNG NGHIỆP HÀ NỘI</td>
+      </tr>
+      <tr>
+        <td colspan="2" id="line">ĐỒ ÁN TỐT NGHIỆP</td>
+      </tr>
+      <tr>
+        <td colspan="2"id="line">TÊN ĐỀ TÀI: ĐIỀU KHIỂN GIÁM SÁT NHIỆT ĐỘ LÒ NHIỆT KẾT HỢP IOT</td>
+      </tr>
+      <tr>
+        <td colspan="2">GVHD: Ts.Phạm Văn Hùng</td>
+      </tr>
+      <tr>
+        <td>Thành viên:</td>
+        <td>Nguyễn Văn Quang - 2018602957</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Phạm Quang Linh - 2018601246</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Vũ Đức Thịnh - 2018603435</td>
+      </tr>
+      <tr>
+        <td>Lớp:</td>
+        <td>2018DHDKTD02 </td>
+      </tr>
+      <tr>
+        <td>Khóa: </td>
+        <td>13</td>
+      </tr>
+
+    </table>
+  </div>
+
+  <div id="MID">
+      <div class="Chart">
+        <canvas id="myChart1" ></canvas>
+      </div>
+  </div>
+
+  <div id="BOT">
+      <div id="Main">
+
+        <div id="SP">
+          <div id="ND">
+                <h2> Temperature : <span id="NhietDo">0</span><br></h2>
+          </div>
+          
+          <form action="/nhantext">
+          <div id="SET">
+            <label for="SETPOINT">SetPoint :</label>
+            <input type="text" id="SETPOINT" name="SETPOINT"><br><br>
+          </div>
+          <div id="send">
+            <input type="submit" value="Send">
+            <input type="reset" name="" value="Reset" />
+          </div>
+          </form>
+
+        </div>
+
+      </div> 
+
+      <div id="Main1">
+
+        <div id="IP">
+          <div>Tên wifi: </div>
+          <div><input id="ssid"/></div>
+          <div>Password wifi: </div>
+          <div><input id="pass"/></div>
+          <div>
+            <button class="bt_write" onclick="writeEEPROM()">WRITE</button>
+            <button class="bt_restart" onclick="restartESP()">RESTART</button>
+            <button class="bt_clear" onclick="clearEEPROM()">CLEAR</button>
+          </div>
+          <div id>IP connected: <pan id="ipconnected"></pan></div>
+          <div id="reponsetext"></div>
+        </div>
+        
+      </div>
+
+
+  </div>
+
+</body>
+
+<style>  
+*{
+  margin: 0px;
+  padding: 0px;
+}
+body{
+    width: 800px;
+    margin: 0px auto;
+    border: 4px;
+    border-style: ridge;
+    border-color: #a7f9ff;
+
+
+ 
+}
+
+#TOP{
+  height: 270px;
+  font-size: 18px;
+  font-family: Serif ;
+  border: 4px;
+  border-style: ridge;
+  border-color: #99ff7a;
+  background-color: #ffda75;
+
+}
+#MID{
+    height: 350px;
+    border: 4px;
+    border-style: ridge;
+    border-color: #fdd054;
+    background-color: #ffda75;
+
+}
+#BOT{
+  height: 210px;
+    border: 4px;
+    border-style: ridge;
+    border-color: #fc9667;
+    background-color: #ffda75;
+
+}
+#TOP table{
+  margin-left: 15%;
+  margin-top: 12px;
+}
+
+#line{
+  text-align: center;
+
+}
+
+#myChart1{
+    background-color: #ffffff;
+    border: 4px;
+    border-style: ridge;
+    border-color: #fc9667;
+    margin-top: 5px;
+    margin-left: 16%;
+}
+#BOT #Main{
+  margin-top: 23px;
+  margin-left: 53%;
+  height:160px;
+  width : 350px;
+  background-color: #ffffff;
+  border: 4px;
+  border-style: ridge;
+  border-color: #fc9667;
+}
+#BOT #Main #SP{
+  margin-left: 10%;
+  margin-top: 20px;
+
+
+}
+
+#BOT #Main1 {
+  margin-left: 15%;
+  margin-top: -160px;
+  height:160px;
+  width : 250px;
+  background-color: #ffffff;
+  border: 4px;
+  border-style: ridge;
+  border-color: #fc9667;
+
+}
+#BOT #Main1 #IP{
+  margin-left: 10px;
+  margin-top: 2px;
+
+
+}
+
+
+#BOT #NhietDo{
+    text-align: center;
+}
+</style>
+<script>
+setInterval(function() { getstr_ND();}, 200); //200mSeconds update rate
+
+var trucx = [];
+var trucy = [];
+function showGraph(){
+    var c = document.getElementById("myChart1");
+    var ctx = c.getContext("2d");
+    var chart  = new Chart(ctx,{
+  type: 'line',
+  data:{
+    labels: trucx,
+    
+    datasets:[{
+
+      backgroundColor:[
+      'rgba(0, 0, 0, 0)',
+     
+        ],
+        borderColor:[
+      'rgba(255, 110, 132, 10)',
+     
+        ],
+      pointRadius: 0.1,
+      borderWidth: 1,
+      label: 'Temperature',
+      data: trucy,
+    }]
+  },
+   options: {
+
+           
+      animation: {
+      duration: 0 
+  },
+  hover: {
+      animationDuration: 0 
+  },
+  responsiveAnimationDuration: 0 ,
+
+  }
+  
+});
+chart.canvas.parentNode.style.height = '335px';
+chart.canvas.parentNode.style.width = '670px';
+}
+function getstr_ND() {
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+if (this.readyState == 4 && this.status == 200) {
+document.getElementById("NhietDo").innerHTML = this.responseText;
+
+Ttime = new Date().toLocaleTimeString();
+      trucx.push(Ttime);
+      trucy.push(this.responseText);
+      showGraph();
+      
+}
+};
+xhttp.open("GET", "docT", true);
+xhttp.send();
+}
+
+//-----------Tạo đối tượng request----------------
+function create_obj(){
+  td = navigator.appName;
+  if(td == "Microsoft Internet Explorer"){
+    obj = new ActiveXObject("Microsoft.XMLHTTP");
+  }else{
+    obj = new XMLHttpRequest();
+  }
+  return obj;
+}
+var xhttp1 = create_obj();
+//------------------------------------------------
+window.onload = function(){
+  xhttp1.open("GET","/getIP",true);
+  xhttp1.onreadystatechange = process_ip;//nhận reponse 
+  xhttp1.send();
+}
+//-----------Kiểm tra response IP------------------
+function process_ip(){
+  if(xhttp1.readyState == 4 && xhttp1.status == 200){
+    //------Updat data sử dụng javascript----------
+    ketqua = xhttp1.responseText; 
+    document.getElementById("ipconnected").innerHTML=ketqua;       
+  }
+}
+//-----------Thiết lập dữ liệu và gửi request ssid và password---
+function writeEEPROM(){
+  var ssid = document.getElementById("ssid").value;
+  var pass = document.getElementById("pass").value;
+  xhttp1.open("GET","/writeEEPROM?ssid="+ssid+"&pass="+pass,true);
+  xhttp1.onreadystatechange = process;//nhận reponse 
+  xhttp1.send();
+}
+function clearEEPROM(){
+  xhttp1.open("GET","/clearEEPROM",true);
+  xhttp1.onreadystatechange = process;//nhận reponse 
+  xhttp1.send();
+}
+function restartESP(){
+  xhttp1.open("GET","/restartESP",true);
+  xhttp1.onreadystatechange = process;//nhận reponse 
+  xhttp1.send();
+}
+//-----------Kiểm tra response ------------------
+function process(){
+  if(xhttp1.readyState == 4 && xhttp1.status == 200){
+    //------Updat data sử dụng javascript----------
+    ketqua = xhttp1.responseText; 
+    document.getElementById("reponsetext").innerHTML=ketqua;       
+  }
+}
+
+ </script>
+</html>

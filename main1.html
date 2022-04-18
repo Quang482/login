@@ -1,0 +1,213 @@
+<html>
+    <head>
+
+        <script src = "js/FC1_Common.js"></script>
+
+        <!-- ////////////// CHƯƠNG TRÌNH ĐĂNG NHẬP HỆ THỐNG //////////////  -->
+        <div id="div_login">
+            <div id="id01" class="modal">
+                <form id = "modal-content1" class="modal-content animate">
+                <div id = "img_container" class="imgcontainer">
+                    <span id = "closebtt" onclick="document.getElementById('id01').style.display='none'; logout();" class="close" title="Close Modal">&times;</span>
+                    <img id = "img_avatar" src="images/user.png" alt="Avatar" class="avatar">
+                </div>
+            
+                <div id = "log_container" class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input id = "inputuser" type="text" placeholder="Enter Username" name="uname" required>
+            
+                    <label for="psw"><b>Password</b></label>
+                    <input id = "inputpass" type="password" placeholder="Enter Password" name="psw" required>
+                    
+                    <button id = "bttlogin1" type="button" onclick="login();">Login</button>
+                    <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                </div>
+            
+                <div id = "login_container" class="container" style="background-color:#f1f1f1">
+                    <button id = "bttcancle" type="button" onclick="document.getElementById('id01').style.display='none'; logout();" class="cancelbtn">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </head>
+    <body>
+                <button id="bttLogin" class="btn" onclick="login();
+                        window.location.reload();
+                ">ĐĂNG NHẬP</button>
+  
+        </body>
+        <div></div>
+<style>
+    /*Div login*/
+#login_welcome {
+    position: fixed; 
+    left: 700px; top: 400px;
+    font-size: 19px;
+    color: rgb(4, 33, 44); 
+}
+/*Font*/
+#modal {
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* Full-width input fields */
+#inputuser[type=text], #inputpass[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+ 
+/* Set a style for all buttons */
+#bttlogin1, #bttcancle {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  /* Extra styles for the cancel button */
+  #bttcancle {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+  }
+ 
+  
+/* Center the image and position the close button */
+#img_container {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+ 
+#img_avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+ 
+#log_container, #login_container {
+  padding: 16px;
+}
+ 
+#psw {
+  float: right;
+  padding-top: 16px;
+}
+ 
+/* The Modal (background) */
+#id01 {
+  position: fixed; /* Stay in place */
+  z-index: 5; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.85); /* Black w/ opacity */
+  padding-top: 60px;
+}
+ 
+/* Modal Content/Box */
+#modal-content1 {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 30%; /* Could be more or less, depending on screen size */
+  height: 610px; /* Could be more or less, depending on screen size */
+}
+ 
+/* The Close Button (x) */
+#closebtt {
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+ 
+#closebtt:hover,
+#closebtt:focus {
+  color: red;
+  cursor: pointer;
+}
+ 
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+ 
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)} 
+  to {-webkit-transform: scale(1)}
+}
+  
+@keyframes animatezoom {
+  from {transform: scale(0)} 
+  to {transform: scale(1)}
+}
+ 
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+</style>
+<script>
+            // Danh sách người dùng
+var admin = ["QuangNguyen","482000"]
+var user1 = ["ThinhVu","972000"]
+var user2 = ["LinhPham","5112000"]
+    
+// Chương trình con
+function login()
+{
+    var a = document.getElementById("inputuser").value;
+    var b = document.getElementById("inputpass").value;
+    // Admin
+    if (a == admin[0] && b == admin[1])
+    {
+        fn_ScreenChange('Screen_Main','Screen_1','Screen_2');
+        document.getElementById('id01').style.display='none';
+    }
+    // User 1
+    else if (a == user1[0] && b == user1[1])
+    {
+        fn_ScreenChange('Screen_Main','Screen_1','Screen_2');
+        document.getElementById('id01').style.display='none';
+        document.getElementById("btt_Screen_2").disabled = true;
+    }
+    // User 2
+    else if (a == user2[0] && b == user2[1])
+    {
+        fn_ScreenChange('Screen_2','Screen_Main','Screen_1');
+        document.getElementById('id01').style.display='none';
+        document.getElementById("btt_Screen_Main").disabled = true;
+        document.getElementById("btt_Screen_1").disabled = true;
+    } 
+    else
+    {
+        window.location.href = '';
+    }
+}
+
+
+</script>
+</html>
